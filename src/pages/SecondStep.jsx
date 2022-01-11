@@ -12,6 +12,7 @@ const SecondStep = () => {
 
   const selectType = (e) => {
     dispatch(FormActionCreators.addTypePet(e.target.name));
+    dispatch(FormActionCreators.changeCurrentStep(3));
     navigate("/registration/3");
   };
 

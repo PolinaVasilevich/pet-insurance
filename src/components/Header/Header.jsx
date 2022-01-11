@@ -8,9 +8,10 @@ import Button from "@mui/material/Button";
 
 import { Link } from "react-router-dom";
 import { RouteNames } from "../../router";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const currentStep = useSelector((state) => state.currentStep);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

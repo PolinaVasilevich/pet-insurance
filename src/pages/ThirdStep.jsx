@@ -13,6 +13,7 @@ const ThirdStep = () => {
   const pet = useSelector((state) => state.pet);
   const dispatch = useDispatch();
   const [kind, setKind] = useState([]);
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     const {
@@ -34,6 +35,14 @@ const ThirdStep = () => {
     console.log(pet);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <div>
       <div>
@@ -49,6 +58,9 @@ const ThirdStep = () => {
           multiple
           value={kind}
           onChange={handleChange}
+          open={open}
+          onClose={handleClose}
+          onOpen={handleOpen}
         >
           {kinds.map((name) => (
             <MenuItem key={name} value={name}>

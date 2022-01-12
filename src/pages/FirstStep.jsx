@@ -1,66 +1,39 @@
 import React from "react";
-import { Formik } from "formik";
+import * as Yup from "yup";
 
-import Button from "@mui/material/Button";
-import { Box, FormControl, InputLabel, OutlinedInput } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { RouteNames } from "../router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { FormActionCreators } from "../store/reducers/action-creators";
+import { RouteNames } from "../router";
+
+import FirsteForm from "../components/Forms/FirstForm";
 
 const FirstStep = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const petName = useSelector((state) => state?.pet?.name);
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Required"),
+  });
+
+  const handleSubmit = (values) => {
+    dispatch(FormActionCreators.changeCurrentStep(2));
+    dispatch(FormActionCreators.addNamePet(values.name));
+
+    navigate(RouteNames.REGISTRATION + "/2");
+  };
+
   return (
     <div>
       <h1>What Is Your Pet's Name?</h1>
-      <Formik
-        initialValues={{ name: "" }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.name) {
-            errors.email = "Required";
-          }
-          return errors;
-        }}
-        onSubmit={(values) => {
-          dispatch(FormActionCreators.changeCurrentStep(2));
-          dispatch(FormActionCreators.addNamePet(values.name));
-
-          navigate(RouteNames.REGISTRATION + "/2");
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <Box
-            component="form"
-            sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-            onSubmit={handleSubmit}
-            autoComplete="off"
-          >
-            <FormControl fullWidth sx={{ m: 1 }}>
-              <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
-              <OutlinedInput
-                name="name"
-                label="Name"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.name}
-              />
-            </FormControl>
-            <Button type="submit" variant="contained" disabled={!values.name}>
-              Next
-            </Button>
-          </Box>
-        )}
-      </Formik>
+      <FirsteForm
+        initialValues={{ name: petName }}
+        validationSchema={validationSchema}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

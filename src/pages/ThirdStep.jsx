@@ -1,26 +1,21 @@
-import {
-  Button,
-  FormControl,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import FormForThirdStep from "../components/Forms/FormForThirdStep";
 import { FormActionCreators } from "../store/reducers/action-creators";
+import { RouteNames } from "../router";
+import { useNavigate } from "react-router-dom";
+
+const validationSchema = Yup.object().shape({
+  kind: Yup.string().required("Required"),
+});
 
 const ThirdStep = () => {
   const pet = useSelector((state) => state.pet);
-  const dispatch = useDispatch();
-  const [kind, setKind] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const user = useSelector((state) => state.user);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setKind(value);
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const kinds = [
     "Mixed Breed",
@@ -30,17 +25,17 @@ const ThirdStep = () => {
     "American Curl",
   ];
 
-  const onClick = () => {
-    dispatch(FormActionCreators.addKindPet(kind));
-    console.log(pet);
-  };
+  const handleSubmit = async (values) => {
+    dispatch(FormActionCreators.addKindPet(values.kind));
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
+    if (!user.username) {
+      dispatch(FormActionCreators.changeCurrentStep(4));
+      navigate(RouteNames.REGISTRATION + "/4");
+    } else {
+      await dispatch(FormActionCreators.addPet(pet));
+      dispatch(FormActionCreators.resetApp());
+      navigate(RouteNames.USERPAGE);
+    }
   };
 
   return (
@@ -51,31 +46,12 @@ const ThirdStep = () => {
         </h1>
         <p>Different breeds have different needs.</p>
       </div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={kind}
-          onChange={handleChange}
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-        >
-          {kinds.map((name) => (
-            <MenuItem key={name} value={name}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-        <Button
-          sx={{ marginTop: "1rem" }}
-          variant="contained"
-          onClick={onClick}
-        >
-          Next
-        </Button>
-      </FormControl>
+      <FormForThirdStep
+        options={kinds}
+        initialValues={{ kind: pet.kind }}
+        validationSchema={validationSchema}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

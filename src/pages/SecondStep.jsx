@@ -1,9 +1,9 @@
-import { Button } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
 import { FormActionCreators } from "../store/reducers/action-creators";
+import { ButtonsBox, FormButton } from "../styles/StyledComponents";
 
 const SecondStep = () => {
   const name = useSelector((state) => state.pet.name);
@@ -19,10 +19,10 @@ const SecondStep = () => {
   return (
     <div>
       <h1>Is {name}...</h1>
-      <div onClick={selectType}>
-        <Button name="cat">Cat</Button>
-        <Button name="dog">Dog</Button>
-      </div>
+      <ButtonsBox onClick={selectType}>
+        <FormButton name="cat">Cat</FormButton>
+        <FormButton name="dog">Dog</FormButton>
+      </ButtonsBox>
     </div>
   );
 };

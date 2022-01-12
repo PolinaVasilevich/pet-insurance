@@ -17,4 +17,16 @@ export const FormActionCreators = {
     type: FormActionTypes.ADD_KIND_PET,
     payload: kind,
   }),
+  addUser: (user) => ({
+    type: FormActionTypes.ADD_USER,
+    payload: user,
+  }),
+
+  addPet: (pet) => ({
+    type: FormActionTypes.ADD_PET,
+    payload: pet,
+  }),
+  resetApp: () => ({
+    type: FormActionTypes.RESET_APP,
+  }),
 };

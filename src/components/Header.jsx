@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import { Link } from "react-router-dom";
-import { RouteNames } from "../../router";
+import { RouteNames } from "../router";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const currentStep = useSelector((state) => state.currentStep);
+  const user = useSelector((state) => state.user);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -21,10 +22,16 @@ const Header = () => {
           </Typography>
 
           <Link to={`${RouteNames.REGISTRATION}/${currentStep}`}>
-            <Button color="inherit">Get my quote</Button>
+            <Button color="inherit">
+              {user.username ? "Add new pet" : "Get my quote"}
+            </Button>
           </Link>
 
-          <Button color="inherit">Login</Button>
+          {user.username ? (
+            <Link to={RouteNames.USERPAGE}>
+              <Button color="inherit">{user.username}</Button>
+            </Link>
+          ) : null}
         </Toolbar>
       </AppBar>
     </Box>

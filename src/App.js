@@ -1,9 +1,11 @@
 import React from "react";
 
 import AppRouter from "./components/AppRouter";
-import Header from "./components/Header/Header";
+import Header from "./components/Header";
+import useGaTracker from "./hooks/useGaTracker";
 
 const App = () => {
+  useGaTracker();
   return (
     <div>
       <Header />

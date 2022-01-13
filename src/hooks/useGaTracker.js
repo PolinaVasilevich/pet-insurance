@@ -6,8 +6,13 @@ const useGaTracker = () => {
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
-    ReactGA.set({ page: location.pathname });
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS, {
+      debug: true,
+      titleCase: false,
+      gaOptions: {
+        userId: 123,
+      },
+    });
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, [location]);
 };

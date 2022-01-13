@@ -78,7 +78,7 @@ export const ButtonsBox = styled(Box)`
   }
 `;
 
-export const FormBox = styledComponents.form`
+export const FormFormik = styledComponents(Form)`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormActionCreators } from "../store/reducers/action-creators";
 import { RouteNames } from "../router";
 
-import FirsteForm from "../components/Forms/FirstForm";
+import FormikForm from "../components/Formik/FormikForm";
+import InputField from "../components/FormFields/InputField";
 
 const FirstStep = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const FirstStep = () => {
 
   const petName = useSelector((state) => state?.pet?.name);
 
-  const validationSchema = Yup.object().shape({
+  const ValidationSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
   });
 
@@ -29,11 +30,14 @@ const FirstStep = () => {
   return (
     <div>
       <h1>What Is Your Pet's Name?</h1>
-      <FirsteForm
+
+      <FormikForm
         initialValues={{ name: petName }}
-        validationSchema={validationSchema}
+        validationSchema={ValidationSchema}
         handleSubmit={handleSubmit}
-      />
+      >
+        <InputField id="name" name="name" placeholder="Name*" />
+      </FormikForm>
     </div>
   );
 };

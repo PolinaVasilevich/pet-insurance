@@ -1,12 +1,14 @@
 import React from "react";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import FormForThirdStep from "../components/Forms/FormForThirdStep";
+
 import { FormActionCreators } from "../store/reducers/action-creators";
 import { RouteNames } from "../router";
 import { useNavigate } from "react-router-dom";
+import SelectField from "../components/FormFields/SelectField";
+import FormikForm from "../components/Formik/FormikForm";
 
-const validationSchema = Yup.object().shape({
+const ValidationSchema = Yup.object().shape({
   kind: Yup.string().required("Required"),
 });
 
@@ -18,11 +20,10 @@ const ThirdStep = () => {
   const navigate = useNavigate();
 
   const kinds = [
-    "Mixed Breed",
-    "Abyssinian",
-    "Alley Cat",
-    "American Bobtail",
-    "American Curl",
+    { value: "Mixed Breed", label: "Mixed Breed" },
+    { value: "Abyssinian", label: "Abyssinian" },
+    { value: "Alley Cat", label: "Alley Cat" },
+    { value: "American Curl", label: "American Curl" },
   ];
 
   const handleSubmit = async (values) => {
@@ -46,12 +47,14 @@ const ThirdStep = () => {
         </h1>
         <p>Different breeds have different needs.</p>
       </div>
-      <FormForThirdStep
-        options={kinds}
+
+      <FormikForm
         initialValues={{ kind: pet.kind }}
-        validationSchema={validationSchema}
+        validationSchema={ValidationSchema}
         handleSubmit={handleSubmit}
-      />
+      >
+        <SelectField data={kinds} id="kind" name="kind" />
+      </FormikForm>
     </div>
   );
 };

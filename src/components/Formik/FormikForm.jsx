@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import React from "react";
 
 import { FormButton, FormFormik } from "../../styles/StyledComponents";

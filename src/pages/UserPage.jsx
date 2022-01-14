@@ -10,7 +10,7 @@ const UserPage = () => {
       <div>
         <h3>Your pets: </h3>
         {user.pets.map((pet) => {
-          return <p key={pet.name}>{pet.name}</p>;
+          return <p key={pet.petName}>{pet.petName}</p>;
         })}
       </div>
     </div>

@@ -4,11 +4,15 @@ const data = load({ namespace: "data" });
 
 const initialState = {
   currentStep: data.currentStep || 1,
-  pet: {
-    name: data?.pet?.name || "",
-    type: data?.pet?.type || "",
-    kind: data?.pet?.kind || "",
+  formData: {
+    petName: data?.formData?.petName || "",
+    petType: data?.formData?.petType || "",
+    petKind: data?.formData?.petKind || "",
+
+    username: "",
+    password: "",
   },
+
   user: data?.user || {
     username: "",
     password: "",
@@ -18,24 +22,16 @@ const initialState = {
 
 export const FormActionTypes = {
   CHANGE_CURRENT_STEP: "CHANGE_CURRENT_STEP",
-  ADD_NAME_PET: "ADD_NAME_PET",
-  ADD_TYPE_PET: "ADD_TYPE_PET",
-  ADD_KIND_PET: "ADD_KIND_PET",
   ADD_USER: "ADD_USER",
   ADD_PET: "ADD_PET",
   RESET_APP: "RESET_APP",
+  ADD_FORM_DATA: "ADD_FORM_DATA",
 };
 
 export default function formReducer(state = initialState, action) {
   switch (action.type) {
     case FormActionTypes.CHANGE_CURRENT_STEP:
       return { ...state, currentStep: action.payload };
-    case FormActionTypes.ADD_NAME_PET:
-      return { ...state, pet: { ...state.pet, name: action.payload } };
-    case FormActionTypes.ADD_TYPE_PET:
-      return { ...state, pet: { ...state.pet, type: action.payload } };
-    case FormActionTypes.ADD_KIND_PET:
-      return { ...state, pet: { ...state.pet, kind: action.payload } };
     case FormActionTypes.ADD_USER:
       return { ...state, user: action.payload };
     case FormActionTypes.ADD_PET:
@@ -53,8 +49,18 @@ export default function formReducer(state = initialState, action) {
       return {
         ...state,
         currentStep: 1,
-        pet: { name: "", kind: "", type: "" },
+        formData: {
+          petName: "",
+          petType: "",
+          petKind: "",
+
+          username: "",
+          password: "",
+        },
       };
+
+    case FormActionTypes.ADD_FORM_DATA:
+      return { ...state, formData: { ...state.formData, ...action.payload } };
     default:
       return state;
   }

@@ -1,20 +1,21 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Home, Registration, FirstStep, SecondStep, ThirdStep } from "../pages";
-import FourthStep from "../pages/FourthStep";
+import { Home, Registration } from "../pages";
+
 import UserPage from "../pages/UserPage";
 
 import { RouteNames } from "../router";
+import MultiStep from "./MultiStep";
 
 const AppRouter = () => {
   return (
     <Routes>
       <Route path={RouteNames.HOME} element={<Home />} />
       <Route path={RouteNames.REGISTRATION} element={<Registration />}>
-        <Route path="1" element={<FirstStep />} />
-        <Route path="2" element={<SecondStep />} />
-        <Route path="3" element={<ThirdStep />} />
-        <Route path="4" element={<FourthStep />} />
+        <Route path="1" element={<MultiStep />} />
+        <Route path="2" element={<MultiStep />} />
+        <Route path="3" element={<MultiStep />} />
+        <Route path="4" element={<MultiStep />} />
       </Route>
       <Route path={RouteNames.USERPAGE} element={<UserPage />} />
     </Routes>

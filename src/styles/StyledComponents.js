@@ -1,6 +1,6 @@
 import { Button, Box, OutlinedInput } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Form } from "formik";
+import { Field, Form } from "formik";
 import styledComponents from "styled-components";
 
 export const RegistrationContainer = styledComponents.div`
@@ -95,4 +95,32 @@ export const MessageError = styledComponents.span`
 
 export const SelectPlaceholder = styledComponents.span`
   color: #808080;
+`;
+
+export const FieldButton = styledComponents(Field).attrs({
+  type: "input",
+})`  
+  width: 200px;
+  height: 45px;
+
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  border: none;
+  outline: none;
+
+  color: #01528d;
+  font-weight: bolder;
+
+  text-align: center;
+  
+  cursor: pointer;
+  caret-color: transparent;
+
+
+  &:hover {
+    background-color: #01528d;
+    color: #fff;
+  }
+
 `;

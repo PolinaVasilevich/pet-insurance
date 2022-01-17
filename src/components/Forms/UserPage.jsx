@@ -3,6 +3,7 @@ import React from "react";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { FormActionCreators } from "../../store/reducers/action-creators";
 
 const UserPage = React.memo(({ username, pets }) => {
@@ -30,9 +31,10 @@ const UserPage = React.memo(({ username, pets }) => {
       <div>
         {pets.map((p) => (
           <Button
-            sx={{ marginBottom: "1rem" }}
+            sx={{ margin: "1rem" }}
             key={p.id}
             variant="outlined"
+            color="inherit"
             onClick={() => handleClick(p.id)}
           >
             {p.petName}

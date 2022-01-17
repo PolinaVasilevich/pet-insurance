@@ -30,41 +30,9 @@ export default function formReducer(state = initialState, action) {
     case FormActionTypes.CHANGE_PETS:
       return { ...state, pets: action.payload };
 
-    case FormActionTypes.CHANGE_CURRENT_STEP:
-      return { ...state, currentStep: action.payload };
-
-    case FormActionTypes.CHANGE_CURRENT_FORM_ID:
-      return { ...state, currentFormId: action.payload };
-
     case FormActionTypes.ADD_USER:
       return { ...state, user: action.payload };
-    case FormActionTypes.ADD_PET:
-      let pets = [];
-      if (state.user.pets) {
-        pets = [...state.user.pets, action.payload];
-      } else {
-        pets.push(action.payload);
-      }
-      return {
-        ...state,
-        user: { ...state.user, pets },
-      };
-    case FormActionTypes.RESET_APP:
-      return {
-        ...state,
 
-        formData: {
-          petName: "",
-          petType: "",
-          petKind: "",
-
-          username: "",
-          password: "",
-        },
-      };
-
-    case FormActionTypes.ADD_FORM_DATA:
-      return { ...state, formData: { ...state.formData, ...action.payload } };
     default:
       return state;
   }

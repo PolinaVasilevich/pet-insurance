@@ -26,12 +26,6 @@ const Header = () => {
               {user.username ? null : "Get my quote"}
             </Button>
           </Link>
-
-          {/* {user.username ? (
-            <Link to={RouteNames.USERPAGE}>
-              <Button color="inherit">{user.username}</Button>
-            </Link>
-          ) : null} */}
         </Toolbar>
       </AppBar>
     </Box>

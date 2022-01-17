@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FieldArray, Formik } from "formik";
 import { PersistFormikValues } from "formik-persist-values";
@@ -11,18 +11,17 @@ import { validationSchema } from "../validationSchema";
 import { FormActionCreators } from "../store/reducers/action-creators";
 
 import { FormButton, FormFormik } from "../styles/StyledComponents";
+import { useFormData } from "../hooks/useFormData";
 
 const MultiStep = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const user = useSelector((state) => state.user);
-  const pets = JSON.parse(localStorage.getItem("PETS"))?.pets || [];
-  const currentFormIndex = useSelector((state) => state.currentFormIndex);
-  const allForms = useSelector((state) => state.forms);
 
-  const currentStep = useMemo(() => {
-    const form = allForms.filter((f) => f.id === pets[currentFormIndex]?.id);
+  const { currentFormIndex, currentStep, pets } = useFormData();
 
-    return form.length ? form[0].currentStep : 1;
-  }, [currentFormIndex, allForms]);
+  console.log(currentFormIndex);
 
   const isSkipLastStep = user.username && currentStep === 2;
   const isLastStep = currentStep === 3 && !user.username;
@@ -53,15 +52,10 @@ const MultiStep = () => {
     navigate(`/registration/${nextStep}`);
   };
 
-  console.log("render");
-
   const addNewPet = () => {
     dispatch(FormActionCreators.changeCurrentFormIndex(currentFormIndex + 1));
     navigate("/registration/1");
   };
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const renderStep = (step, formIndex, values) => {
     switch (step) {
@@ -109,7 +103,7 @@ const MultiStep = () => {
         onSubmit={(values) => handleSubmit(values)}
         validationSchema={validationSchema[currentStep - 1]}
       >
-        {({ values, errors }) => (
+        {({ values }) => (
           <FormFormik>
             <FieldArray name="pets">
               {({ push }) => (

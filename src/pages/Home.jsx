@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { UserPage } from "../components/Forms";
+import { useFormData } from "../hooks/useFormData";
 
 const Home = () => {
-  const pets = JSON.parse(localStorage.getItem("PETS"))?.pets || [];
+  const { pets } = useFormData();
   const user = useSelector((state) => state.user);
   return (
     <div>

@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../store/reducers/action-creators";
@@ -14,33 +14,22 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { RouteNames } from "../router";
+import { useFormData } from "../hooks/useFormData";
 
 const Registration = () => {
-  const countSteps = 4;
-  const pets = JSON.parse(localStorage.getItem("PETS"))?.pets || [];
-  const currentFormIndex = useSelector((state) => state.currentFormIndex);
-  const allForms = useSelector((state) => state.forms);
-
-  const currentStep = useMemo(() => {
-    const form = allForms.filter((f) => f.id === pets[currentFormIndex]?.id);
-
-    return form.length ? form[0].currentStep : 1;
-  }, [currentFormIndex, allForms]);
-
-  const progress = Math.floor((100 / countSteps) * currentStep);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const countSteps = 4;
+  const { currentStep, currentForm } = useFormData();
+
+  const progress = Math.floor((100 / countSteps) * currentStep);
+
   const prevStep = () => {
     if (currentStep !== 1) {
-      const form = allForms.filter(
-        (f) => f.id === pets[currentFormIndex]?.id
-      )[0];
-
       dispatch(
         FormActionCreators.changeFormData({
-          ...form,
+          ...currentForm,
           currentStep: currentStep - 1,
         })
       );

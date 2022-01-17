@@ -1,8 +1,10 @@
 import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./reducers";
 import { save } from "redux-localstorage-simple";
+import { composeWithDevTools } from "redux-devtools-extension";
+
+import rootReducer from "./reducers";
 
 export const store = createStore(
   rootReducer,
-  applyMiddleware(save({ namespace: "data" }))
+  composeWithDevTools(applyMiddleware(save({ namespace: "DATA" })))
 );

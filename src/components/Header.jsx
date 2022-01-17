@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,15 +23,9 @@ const Header = () => {
 
           <Link to={`${RouteNames.REGISTRATION}/${currentStep}`}>
             <Button color="inherit">
-              {user.username ? "Add new pet" : "Get my quote"}
+              {user.username ? null : "Get my quote"}
             </Button>
           </Link>
-
-          {user.username ? (
-            <Link to={RouteNames.USERPAGE}>
-              <Button color="inherit">{user.username}</Button>
-            </Link>
-          ) : null}
         </Toolbar>
       </AppBar>
     </Box>

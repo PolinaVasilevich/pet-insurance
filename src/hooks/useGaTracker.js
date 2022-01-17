@@ -7,7 +7,7 @@ const useGaTracker = () => {
 
   useEffect(() => {
     ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS, {
-      debug: true,
+      debug: false,
       titleCase: false,
       gaOptions: {
         userId: 123,

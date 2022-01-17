@@ -6,7 +6,7 @@ import {
   MessageError,
 } from "../../styles/StyledComponents";
 
-const InputField = (props) => {
+const InputField = React.memo((props) => {
   const [field, meta] = useField(props);
 
   return (
@@ -17,6 +17,6 @@ const InputField = (props) => {
       ) : null}
     </FormField>
   );
-};
+});
 
 export default InputField;

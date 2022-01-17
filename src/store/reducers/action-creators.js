@@ -1,32 +1,23 @@
-import { FormActionTypes } from ".";
+import { FormActionTypes } from "./types";
 
 export const FormActionCreators = {
-  changeCurrentStep: (step) => ({
-    type: FormActionTypes.CHANGE_CURRENT_STEP,
-    payload: step,
+  changeFormData: (formData) => ({
+    type: FormActionTypes.CHANGE_FORM_DATA,
+    payload: formData,
   }),
-  addNamePet: (name) => ({
-    type: FormActionTypes.ADD_NAME_PET,
-    payload: name,
+
+  changeCurrentFormIndex: (formIndex) => ({
+    type: FormActionTypes.CHANGE_CURRENT_FORM_INDEX,
+    payload: formIndex,
   }),
-  addTypePet: (type) => ({
-    type: FormActionTypes.ADD_TYPE_PET,
-    payload: type,
+
+  changePets: (pets) => ({
+    type: FormActionTypes.CHANGE_PETS,
+    payload: pets,
   }),
-  addKindPet: (kind) => ({
-    type: FormActionTypes.ADD_KIND_PET,
-    payload: kind,
-  }),
+
   addUser: (user) => ({
     type: FormActionTypes.ADD_USER,
     payload: user,
-  }),
-
-  addPet: (pet) => ({
-    type: FormActionTypes.ADD_PET,
-    payload: pet,
-  }),
-  resetApp: () => ({
-    type: FormActionTypes.RESET_APP,
   }),
 };

@@ -1,65 +1,105 @@
-import { Formik } from "formik";
-import React from "react";
+import React, { useMemo } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { FieldArray, Formik } from "formik";
+import { PersistFormikValues } from "formik-persist-values";
+
 import { useSelector, useDispatch } from "react-redux";
-
 import { useNavigate } from "react-router-dom";
-import { FormButton, FormFormik } from "../styles/StyledComponents";
-import { NamePetForm, KindPetForm, UserInfoForm } from "./Forms";
 
-import validationSchema from "../validationSchema";
-
+import { NamePetForm, KindPetForm, UserInfoForm, UserPage } from "./Forms";
+import { validationSchema } from "../validationSchema";
 import { FormActionCreators } from "../store/reducers/action-creators";
 
+import { FormButton, FormFormik } from "../styles/StyledComponents";
+
 const MultiStep = () => {
-  const currentStep = useSelector((state) => state.currentStep);
-  const formData = useSelector((state) => state.formData);
+  const user = useSelector((state) => state.user);
+  const pets = JSON.parse(localStorage.getItem("PETS"))?.pets || [];
+  const currentFormIndex = useSelector((state) => state.currentFormIndex);
+  const allForms = useSelector((state) => state.forms);
+
+  const currentStep = useMemo(() => {
+    const form = allForms.filter((f) => f.id === pets[currentFormIndex]?.id);
+
+    return form.length ? form[0].currentStep : 1;
+  }, [currentFormIndex, allForms]);
+
+  const isSkipLastStep = user.username && currentStep === 2;
+  const isLastStep = currentStep === 3 && !user.username;
+
+  const handleSubmit = (values) => {
+    const formData = values.pets[currentFormIndex];
+    let nextStep;
+
+    if (isSkipLastStep) {
+      nextStep = 4;
+    } else {
+      nextStep = currentStep + 1;
+    }
+
+    if (isLastStep) {
+      const { username, password } = formData;
+      const user = { username, password };
+      dispatch(FormActionCreators.addUser(user));
+    }
+
+    dispatch(
+      FormActionCreators.changeFormData({
+        id: formData.id,
+        currentStep: nextStep,
+      })
+    );
+
+    navigate(`/registration/${nextStep}`);
+  };
+
+  console.log("render");
+
+  const addNewPet = () => {
+    dispatch(FormActionCreators.changeCurrentFormIndex(currentFormIndex + 1));
+    navigate("/registration/1");
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const renderStep = (step) => {
+  const renderStep = (step, formIndex, values) => {
     switch (step) {
       case 1:
-        return <NamePetForm />;
+        return <NamePetForm formIndex={formIndex} />;
       case 2:
         return (
-          <KindPetForm petName={formData.petName} petType={formData.petType} />
+          <KindPetForm
+            petData={values.pets[currentFormIndex]}
+            formIndex={formIndex}
+          />
         );
       case 3:
-        return <UserInfoForm />;
+        return <UserInfoForm formIndex={formIndex} />;
+      case 4:
+        return (
+          <UserPage
+            formIndex={formIndex}
+            username={user?.username}
+            pets={pets}
+          />
+        );
       default:
-        return <NamePetForm />;
+        return <NamePetForm formIndex={formIndex} />;
     }
   };
 
   const initialValues = {
-    petName: formData.petName,
-    petKind: formData.petKind,
-    petType: "",
-    username: "",
-    password: "",
-  };
-
-  const submitForm = async (values) => {
-    const { username, password, petName, petKind, petType } = values;
-    const user = { username, password };
-    const pet = { petName, petKind, petType };
-    await dispatch(FormActionCreators.addUser(user));
-    await dispatch(FormActionCreators.addPet(pet));
-    dispatch(FormActionCreators.changeCurrentStep(1));
-    dispatch(FormActionCreators.resetApp());
-    navigate(`/userpage`);
-  };
-
-  const handleSubmit = (values) => {
-    if (currentStep !== 3) {
-      console.log(values);
-      dispatch(FormActionCreators.changeCurrentStep(currentStep + 1));
-      dispatch(FormActionCreators.addFormData(values));
-      navigate(`/registration/${currentStep}`);
-    } else {
-      submitForm(values);
-    }
+    pets: [
+      {
+        id: uuidv4(),
+        petName: "",
+        petKind: "",
+        petType: "",
+        username: "",
+        password: "",
+      },
+    ],
   };
 
   return (
@@ -69,10 +109,45 @@ const MultiStep = () => {
         onSubmit={(values) => handleSubmit(values)}
         validationSchema={validationSchema[currentStep - 1]}
       >
-        {() => (
+        {({ values, errors }) => (
           <FormFormik>
-            {renderStep(currentStep)}
-            <FormButton type="submit">Next</FormButton>
+            <FieldArray name="pets">
+              {({ push }) => (
+                <div>
+                  {values.pets.map((p, index) => {
+                    return (
+                      <div key={p.id}>
+                        {currentFormIndex === index
+                          ? renderStep(currentStep, index, values)
+                          : null}
+                      </div>
+                    );
+                  })}
+
+                  {currentStep !== 4 ? (
+                    <FormButton type="submit">Next</FormButton>
+                  ) : (
+                    <FormButton
+                      onClick={() => {
+                        push({
+                          id: uuidv4(),
+                          petName: "",
+                          petKind: "",
+                          petType: "",
+                          username: "",
+                          password: "",
+                        });
+                        addNewPet();
+                      }}
+                    >
+                      Add another pet
+                    </FormButton>
+                  )}
+                </div>
+              )}
+            </FieldArray>
+
+            <PersistFormikValues name={"PETS"} />
           </FormFormik>
         )}
       </Formik>

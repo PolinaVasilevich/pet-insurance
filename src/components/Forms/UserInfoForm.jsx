@@ -2,7 +2,7 @@ import React from "react";
 
 import InputField from "../FormFields/InputField";
 
-const UserInfoForm = () => {
+const UserInfoForm = React.memo(({ formIndex }) => {
   return (
     <>
       <div>
@@ -12,15 +12,17 @@ const UserInfoForm = () => {
           personalized recommendation!
         </p>
       </div>
-      <InputField id="username" name="username" placeholder="Username*" />
       <InputField
-        id="password"
-        name="password"
+        name={`pets[${formIndex}].username`}
+        placeholder="Username*"
+      />
+      <InputField
+        name={`pets[${formIndex}].password`}
         type="password"
         placeholder="Password*"
       />
     </>
   );
-};
+});
 
 export default UserInfoForm;

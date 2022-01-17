@@ -23,15 +23,15 @@ const Header = () => {
 
           <Link to={`${RouteNames.REGISTRATION}/${currentStep}`}>
             <Button color="inherit">
-              {user.username ? "Add new pet" : "Get my quote"}
+              {user.username ? null : "Get my quote"}
             </Button>
           </Link>
 
-          {user.username ? (
+          {/* {user.username ? (
             <Link to={RouteNames.USERPAGE}>
               <Button color="inherit">{user.username}</Button>
             </Link>
-          ) : null}
+          ) : null} */}
         </Toolbar>
       </AppBar>
     </Box>

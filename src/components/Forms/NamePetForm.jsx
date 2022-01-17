@@ -1,13 +1,13 @@
 import React from "react";
 import InputField from "../FormFields/InputField";
 
-const NamePetForm = () => {
+const NamePetForm = React.memo(({ formIndex }) => {
   return (
     <>
       <h1>What Is Your Pet's Name?</h1>
-      <InputField id="petName" name="petName" placeholder="Name*" />
+      <InputField name={`pets[${formIndex}].petName`} placeholder="Name*" />
     </>
   );
-};
+});
 
 export default NamePetForm;

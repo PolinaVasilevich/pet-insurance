@@ -1,17 +1,19 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FieldArray, Formik } from "formik";
-import { PersistFormikValues } from "formik-persist-values";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { NamePetForm, KindPetForm, UserInfoForm, UserPage } from "./Forms";
-import { validationSchema } from "../validationSchema";
+import SignUpStepTitle from "./SignUpStepTitle";
+import SignUpStepSubTitle from "./SignUpStepSubTitle";
+import FormFormik from "./FormFormik/FormFormik";
+import { NamePetForm, BreedPetForm, UserInfoForm, UserPage } from "./Forms";
+
 import { FormActionCreators } from "../store/reducers/action-creators";
 
-import { FormButton, FormFormik } from "../styles/StyledComponents";
 import { useFormData } from "../hooks/useFormData";
+import { useSignUpFormData } from "../hooks/useSignUpFormData";
+import { useBreedsPet } from "../hooks/useBreedsPet";
 
 const MultiStep = () => {
   const dispatch = useDispatch();
@@ -19,9 +21,12 @@ const MultiStep = () => {
 
   const user = useSelector((state) => state.user);
 
-  const { currentFormIndex, currentStep, pets } = useFormData();
+  const { currentFormIndex, selectCurrentStep, pets } = useFormData();
 
-  console.log(currentFormIndex);
+  const currentStep = useSelector(selectCurrentStep);
+
+  const { breedsPet } = useBreedsPet();
+  const signUpFormData = useSignUpFormData(currentStep, pets);
 
   const isSkipLastStep = user.username && currentStep === 2;
   const isLastStep = currentStep === 3 && !user.username;
@@ -52,22 +57,12 @@ const MultiStep = () => {
     navigate(`/registration/${nextStep}`);
   };
 
-  const addNewPet = () => {
-    dispatch(FormActionCreators.changeCurrentFormIndex(currentFormIndex + 1));
-    navigate("/registration/1");
-  };
-
-  const renderStep = (step, formIndex, values) => {
+  const renderStep = (step, formIndex) => {
     switch (step) {
       case 1:
         return <NamePetForm formIndex={formIndex} />;
       case 2:
-        return (
-          <KindPetForm
-            petData={values.pets[currentFormIndex]}
-            formIndex={formIndex}
-          />
-        );
+        return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
       case 3:
         return <UserInfoForm formIndex={formIndex} />;
       case 4:
@@ -98,53 +93,15 @@ const MultiStep = () => {
 
   return (
     <div>
-      <Formik
-        initialValues={{ ...initialValues }}
-        onSubmit={(values) => handleSubmit(values)}
-        validationSchema={validationSchema[currentStep - 1]}
-      >
-        {({ values }) => (
-          <FormFormik>
-            <FieldArray name="pets">
-              {({ push }) => (
-                <div>
-                  {values.pets.map((p, index) => {
-                    return (
-                      <div key={p.id}>
-                        {currentFormIndex === index
-                          ? renderStep(currentStep, index, values)
-                          : null}
-                      </div>
-                    );
-                  })}
-
-                  {currentStep !== 4 ? (
-                    <FormButton type="submit">Next</FormButton>
-                  ) : (
-                    <FormButton
-                      onClick={() => {
-                        push({
-                          id: uuidv4(),
-                          petName: "",
-                          petKind: "",
-                          petType: "",
-                          username: "",
-                          password: "",
-                        });
-                        addNewPet();
-                      }}
-                    >
-                      Add another pet
-                    </FormButton>
-                  )}
-                </div>
-              )}
-            </FieldArray>
-
-            <PersistFormikValues name={"PETS"} />
-          </FormFormik>
-        )}
-      </Formik>
+      <SignUpStepTitle>{signUpFormData.title}</SignUpStepTitle>
+      <SignUpStepSubTitle>{signUpFormData.subTitle}</SignUpStepSubTitle>
+      <FormFormik
+        initialValues={initialValues}
+        handleSubmit={handleSubmit}
+        renderStep={renderStep}
+        currentFormIndex={currentFormIndex}
+        currentStep={currentStep}
+      />
     </div>
   );
 };

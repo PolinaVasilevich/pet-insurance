@@ -8,7 +8,7 @@ import {
   SelectPlaceholder,
 } from "../../styles/StyledComponents";
 
-const SelectField = React.memo((props) => {
+const SelectField = (props) => {
   const [field, meta] = useField(props);
   const { value: selectedValue } = field;
 
@@ -36,6 +36,6 @@ const SelectField = React.memo((props) => {
       ) : null}
     </FormField>
   );
-});
+};
 
 export default SelectField;

@@ -10,10 +10,7 @@ const AppRouter = () => {
     <Routes>
       <Route path={RouteNames.HOME} element={<Home />} />
       <Route path={RouteNames.REGISTRATION} element={<Registration />}>
-        <Route path="1" element={<MultiStep />} />
-        <Route path="2" element={<MultiStep />} />
-        <Route path="3" element={<MultiStep />} />
-        <Route path="4" element={<MultiStep />} />
+        <Route path=":step" element={<MultiStep />} />
       </Route>
     </Routes>
   );

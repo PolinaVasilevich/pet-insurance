@@ -1,26 +1,27 @@
-// import { createSelector } from "reselect";
-import { useMemo } from "react";
+import { createSelector } from "reselect";
+
 import { useSelector } from "react-redux";
 
 export const useFormData = () => {
   const currentFormIndex = useSelector((state) => state.currentFormIndex);
-  //   const selectorForms = (state) => state.forms;
-
-  const forms = useSelector((state) => state.forms);
+  const selectorForms = (state) => state.forms;
+  const selectCurrentIndex = (state) => state.currentFormIndex;
 
   const pets = JSON.parse(localStorage.getItem("PETS"))?.pets || [];
 
-  //   const currentForm = createSelector([selectorForms], (forms) => {
-  //     return
-  //   });
+  const selectCurrentForm = createSelector(
+    [selectorForms, selectCurrentIndex],
+    (forms) => {
+      return forms.filter((f) => f.id === pets[currentFormIndex]?.id)[0];
+    }
+  );
 
-  const currentForm = useMemo(() => {
-    return forms.filter((f) => f.id === pets[currentFormIndex]?.id)[0];
-  }, [currentFormIndex, forms]);
+  const selectCurrentStep = createSelector(
+    [selectCurrentForm, selectorForms, selectCurrentIndex],
+    (form) => {
+      return form?.currentStep ? form.currentStep : 1;
+    }
+  );
 
-  const currentStep = useMemo(() => {
-    return currentForm?.currentStep ? currentForm.currentStep : 1;
-  }, [currentForm]);
-
-  return { currentFormIndex, currentStep, pets, currentForm };
+  return { currentFormIndex, selectCurrentStep, pets, selectCurrentForm };
 };

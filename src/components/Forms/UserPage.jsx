@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../../store/reducers/action-creators";
 
-const UserPage = React.memo(({ username, pets }) => {
+const UserPage = ({ pets }) => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
@@ -25,24 +25,19 @@ const UserPage = React.memo(({ username, pets }) => {
 
   return (
     <div>
-      <h1>Hello, {username}</h1>
-      <p>You can select Insurance and Wellness plans for your pets</p>
-
-      <div>
-        {pets.map((p) => (
-          <Button
-            sx={{ margin: "1rem" }}
-            key={p.id}
-            variant="outlined"
-            color="inherit"
-            onClick={() => handleClick(p.id)}
-          >
-            {p.petName}
-          </Button>
-        ))}
-      </div>
+      {pets.map((p) => (
+        <Button
+          sx={{ margin: "1rem" }}
+          key={p.id}
+          variant="outlined"
+          color="inherit"
+          onClick={() => handleClick(p.id)}
+        >
+          {p.petName}
+        </Button>
+      ))}
     </div>
   );
-});
+};
 
 export default UserPage;

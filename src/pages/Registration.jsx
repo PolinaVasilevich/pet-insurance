@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../store/reducers/action-creators";
@@ -21,7 +21,10 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const countSteps = 4;
-  const { currentStep, currentForm } = useFormData();
+  const { selectCurrentStep, selectCurrentForm } = useFormData();
+
+  const currentStep = useSelector(selectCurrentStep);
+  const currentForm = useSelector(selectCurrentForm);
 
   const progress = Math.floor((100 / countSteps) * currentStep);
 

@@ -1,10 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { UserPage } from "../components/Forms";
-import { useFormData } from "../hooks/useFormData";
 
 const Home = () => {
-  const { pets } = useFormData();
+  const pets = useSelector((state) => state.pets);
   const user = useSelector((state) => state.user);
   return (
     <div>

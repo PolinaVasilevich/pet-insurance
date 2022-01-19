@@ -6,12 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 import SignUpStepTitle from "./SignUpStepTitle";
 import SignUpStepSubTitle from "./SignUpStepSubTitle";
-import FormFormik from "./FormFormik/FormFormik";
+import SignUpForm from "./FormFormik/SignUpForm";
 import { NamePetForm, BreedPetForm, UserInfoForm, UserPage } from "./Forms";
 
 import { FormActionCreators } from "../store/reducers/action-creators";
 
-import { useFormData } from "../hooks/useFormData";
 import { useSignUpFormData } from "../hooks/useSignUpFormData";
 import { useBreedsPet } from "../hooks/useBreedsPet";
 
@@ -20,13 +19,14 @@ const MultiStep = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
+  const pets = useSelector((state) => state.pets);
 
-  const { currentFormIndex, selectCurrentStep, pets } = useFormData();
-
-  const currentStep = useSelector(selectCurrentStep);
+  const { currentStep, currentFormIndex } = useSelector(
+    (state) => state.signUpForm
+  );
 
   const { breedsPet } = useBreedsPet();
-  const signUpFormData = useSignUpFormData(currentStep, pets);
+  const signUpFormData = useSignUpFormData(currentStep);
 
   const isSkipLastStep = user.username && currentStep === 2;
   const isLastStep = currentStep === 3 && !user.username;
@@ -41,18 +41,14 @@ const MultiStep = () => {
       nextStep = currentStep + 1;
     }
 
+    const { username, password } = formData;
+
     if (isLastStep) {
-      const { username, password } = formData;
-      const user = { username, password };
+      const user = { id: uuidv4(), username, password };
       dispatch(FormActionCreators.addUser(user));
     }
 
-    dispatch(
-      FormActionCreators.changeFormData({
-        id: formData.id,
-        currentStep: nextStep,
-      })
-    );
+    dispatch(FormActionCreators.changeCurrentStep(nextStep));
 
     navigate(`/registration/${nextStep}`);
   };
@@ -84,7 +80,6 @@ const MultiStep = () => {
         id: uuidv4(),
         petName: "",
         petKind: "",
-        petType: "",
         username: "",
         password: "",
       },
@@ -95,7 +90,7 @@ const MultiStep = () => {
     <div>
       <SignUpStepTitle>{signUpFormData.title}</SignUpStepTitle>
       <SignUpStepSubTitle>{signUpFormData.subTitle}</SignUpStepSubTitle>
-      <FormFormik
+      <SignUpForm
         initialValues={initialValues}
         handleSubmit={handleSubmit}
         renderStep={renderStep}

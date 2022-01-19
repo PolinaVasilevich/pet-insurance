@@ -6,20 +6,17 @@ import { useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../../store/reducers/action-creators";
 
-const UserPage = ({ pets }) => {
+const UserPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
+
+  const pets = JSON.parse(localStorage.getItem("PETS"))?.pets;
 
   const handleClick = (formId) => {
     const formIndex = pets.findIndex((p) => p.id === formId);
 
     dispatch(FormActionCreators.changeCurrentFormIndex(formIndex));
-    dispatch(
-      FormActionCreators.changeFormData({
-        id: formId,
-        currentStep: 1,
-      })
-    );
+    dispatch(FormActionCreators.changeCurrentStep(1));
     navigation("/registration/1");
   };
 

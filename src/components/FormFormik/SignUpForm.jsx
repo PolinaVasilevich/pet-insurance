@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { PersistFormikValues } from "formik-persist-values";
 import { FieldArray, Formik } from "formik";
@@ -8,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FormActionCreators } from "../../store/reducers/action-creators";
 
-const FormFormikComponent = ({
+const SignUpForm = ({
   initialValues,
   handleSubmit,
 
@@ -21,6 +22,7 @@ const FormFormikComponent = ({
 
   const addNewForm = () => {
     dispatch(FormActionCreators.changeCurrentFormIndex(currentFormIndex + 1));
+    dispatch(FormActionCreators.changeCurrentStep(1));
     navigate("/registration/1");
   };
 
@@ -52,7 +54,9 @@ const FormFormikComponent = ({
                   <FormButton
                     onClick={() => {
                       push({
-                        ...initialValues.pets[0],
+                        id: uuidv4(),
+                        petName: "",
+                        petKind: "",
                       });
                       addNewForm();
                     }}
@@ -71,4 +75,4 @@ const FormFormikComponent = ({
   );
 };
 
-export default FormFormikComponent;
+export default SignUpForm;

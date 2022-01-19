@@ -2,8 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
-import { FormActionCreators } from "../store/reducers/action-creators";
-
 import LinearProgress from "@mui/material/LinearProgress";
 import {
   RegistrationContentContainer,
@@ -14,29 +12,17 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { RouteNames } from "../router";
-import { useFormData } from "../hooks/useFormData";
 
 const Registration = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const countSteps = 4;
-  const { selectCurrentStep, selectCurrentForm } = useFormData();
-
-  const currentStep = useSelector(selectCurrentStep);
-  const currentForm = useSelector(selectCurrentForm);
+  const { currentStep } = useSelector((state) => state.signUpForm);
 
   const progress = Math.floor((100 / countSteps) * currentStep);
 
   const prevStep = () => {
     if (currentStep !== 1) {
-      dispatch(
-        FormActionCreators.changeFormData({
-          ...currentForm,
-          currentStep: currentStep - 1,
-        })
-      );
-
       navigate(`/registration/${currentStep - 1}`);
     }
   };

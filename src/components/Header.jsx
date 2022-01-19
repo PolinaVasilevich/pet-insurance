@@ -22,9 +22,7 @@ const Header = () => {
           </Typography>
 
           <Link to={`${RouteNames.REGISTRATION}/${currentStep}`}>
-            <Button color="inherit">
-              {user.username ? null : "Get my quote"}
-            </Button>
+            <Button color="inherit">Get my quote</Button>
           </Link>
         </Toolbar>
       </AppBar>

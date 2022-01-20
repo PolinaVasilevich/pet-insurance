@@ -13,6 +13,7 @@ import { FormActionCreators } from "../store/reducers/action-creators";
 
 import { useSignUpFormData } from "../hooks/useSignUpFormData";
 import { useBreedsPet } from "../hooks/useBreedsPet";
+import { useGoogleOptimize } from "../hooks/useGoogleOptimize";
 
 // const pets = (state) => state.pets;
 
@@ -28,10 +29,12 @@ const MultiStep = () => {
   }, [pathname]);
 
   const user = useSelector((state) => state.user);
-  // const petsSelector = useSelector(
-  //   pets,
-  //   (prev, current) => prev.id === current.id
-  // );
+
+  const variant = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
+
+  console.log(process.env.REACT_APP_EXPERIMENT_ID);
+
+  console.log(variant);
 
   const { currentStep, currentFormIndex } = useSelector(
     (state) => state.signUpForm

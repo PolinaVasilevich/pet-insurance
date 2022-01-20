@@ -66,6 +66,8 @@ const MultiStep = () => {
     navigate(`/registration/${nextStep}`);
   };
 
+  console.log("variantForm ", variantForm);
+
   const renderStep = (step, formIndex, action) => {
     if (variantForm === 1) {
       switch (step) {

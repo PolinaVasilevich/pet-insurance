@@ -8,9 +8,11 @@ import {
   SelectPlaceholder,
 } from "../../styles/StyledComponents";
 
-const SelectField = React.memo((props) => {
+const SelectField = (props) => {
   const [field, meta] = useField(props);
   const { value: selectedValue } = field;
+
+  console.log("RENDER SELECT");
 
   return (
     <FormField>
@@ -36,6 +38,6 @@ const SelectField = React.memo((props) => {
       ) : null}
     </FormField>
   );
-});
+};
 
 export default SelectField;

@@ -11,13 +11,18 @@ export const FormActionCreators = {
     payload: formIndex,
   }),
 
-  changePets: (pets) => ({
-    type: FormActionTypes.CHANGE_PETS,
+  addPet: (pets) => ({
+    type: FormActionTypes.ADD_PET,
     payload: pets,
   }),
 
   addUser: (user) => ({
     type: FormActionTypes.ADD_USER,
     payload: user,
+  }),
+
+  changeCurrentStep: (step) => ({
+    type: FormActionTypes.CHANGE_CURRENT_STEP,
+    payload: step,
   }),
 };

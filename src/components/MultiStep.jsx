@@ -1,27 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FieldArray, Formik } from "formik";
-import { PersistFormikValues } from "formik-persist-values";
 
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { NamePetForm, KindPetForm, UserInfoForm, UserPage } from "./Forms";
-import { validationSchema } from "../validationSchema";
+import SignUpStepTitle from "./SignUpStepTitle";
+import SignUpStepSubTitle from "./SignUpStepSubTitle";
+import SignUpForm from "./FormFormik/SignUpForm";
+import { NamePetForm, BreedPetForm, UserInfoForm, UserPage } from "./Forms";
+
 import { FormActionCreators } from "../store/reducers/action-creators";
 
-import { FormButton, FormFormik } from "../styles/StyledComponents";
-import { useFormData } from "../hooks/useFormData";
+import { useSignUpFormData } from "../hooks/useSignUpFormData";
+import { useBreedsPet } from "../hooks/useBreedsPet";
+import { useGoogleOptimize } from "../hooks/useGoogleOptimize";
+
+// const pets = (state) => state.pets;
 
 const MultiStep = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    dispatch(
+      FormActionCreators.changeCurrentStep(+pathname[pathname.length - 1])
+    );
+  }, [pathname]);
 
   const user = useSelector((state) => state.user);
 
-  const { currentFormIndex, currentStep, pets } = useFormData();
+  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
 
-  console.log(currentFormIndex);
+  const { currentStep, currentFormIndex } = useSelector(
+    (state) => state.signUpForm
+  );
+
+  console.log("RENDER MULTISTEP");
+
+  const { breedsPet } = useBreedsPet();
+  const signUpFormData = useSignUpFormData(currentStep);
 
   const isSkipLastStep = user.username && currentStep === 2;
   const isLastStep = currentStep === 3 && !user.username;
@@ -36,50 +54,47 @@ const MultiStep = () => {
       nextStep = currentStep + 1;
     }
 
+    const { username, password } = formData;
+
     if (isLastStep) {
-      const { username, password } = formData;
-      const user = { username, password };
+      const user = { id: uuidv4(), username, password };
       dispatch(FormActionCreators.addUser(user));
     }
 
-    dispatch(
-      FormActionCreators.changeFormData({
-        id: formData.id,
-        currentStep: nextStep,
-      })
-    );
+    // dispatch(FormActionCreators.changeCurrentStep(nextStep));
 
     navigate(`/registration/${nextStep}`);
   };
 
-  const addNewPet = () => {
-    dispatch(FormActionCreators.changeCurrentFormIndex(currentFormIndex + 1));
-    navigate("/registration/1");
-  };
+  console.log("variantForm ", variantForm);
 
-  const renderStep = (step, formIndex, values) => {
-    switch (step) {
-      case 1:
-        return <NamePetForm formIndex={formIndex} />;
-      case 2:
-        return (
-          <KindPetForm
-            petData={values.pets[currentFormIndex]}
-            formIndex={formIndex}
-          />
-        );
-      case 3:
-        return <UserInfoForm formIndex={formIndex} />;
-      case 4:
-        return (
-          <UserPage
-            formIndex={formIndex}
-            username={user?.username}
-            pets={pets}
-          />
-        );
-      default:
-        return <NamePetForm formIndex={formIndex} />;
+  const renderStep = (step, formIndex, action) => {
+    if (variantForm === 1) {
+      switch (step) {
+        case 1:
+          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
+        case 2:
+          return <NamePetForm formIndex={formIndex} />;
+        case 3:
+          return <UserInfoForm formIndex={formIndex} />;
+        case 4:
+          return <UserPage removePet={action} />;
+        default:
+          return <NamePetForm formIndex={formIndex} />;
+      }
+    } else {
+      switch (step) {
+        case 1:
+          return <NamePetForm formIndex={formIndex} />;
+        case 2:
+          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
+        case 3:
+          return <UserInfoForm formIndex={formIndex} />;
+        case 4:
+          return <UserPage removePet={action} />;
+        default:
+          return <NamePetForm formIndex={formIndex} />;
+      }
     }
   };
 
@@ -89,7 +104,6 @@ const MultiStep = () => {
         id: uuidv4(),
         petName: "",
         petKind: "",
-        petType: "",
         username: "",
         password: "",
       },
@@ -98,53 +112,15 @@ const MultiStep = () => {
 
   return (
     <div>
-      <Formik
-        initialValues={{ ...initialValues }}
-        onSubmit={(values) => handleSubmit(values)}
-        validationSchema={validationSchema[currentStep - 1]}
-      >
-        {({ values }) => (
-          <FormFormik>
-            <FieldArray name="pets">
-              {({ push }) => (
-                <div>
-                  {values.pets.map((p, index) => {
-                    return (
-                      <div key={p.id}>
-                        {currentFormIndex === index
-                          ? renderStep(currentStep, index, values)
-                          : null}
-                      </div>
-                    );
-                  })}
-
-                  {currentStep !== 4 ? (
-                    <FormButton type="submit">Next</FormButton>
-                  ) : (
-                    <FormButton
-                      onClick={() => {
-                        push({
-                          id: uuidv4(),
-                          petName: "",
-                          petKind: "",
-                          petType: "",
-                          username: "",
-                          password: "",
-                        });
-                        addNewPet();
-                      }}
-                    >
-                      Add another pet
-                    </FormButton>
-                  )}
-                </div>
-              )}
-            </FieldArray>
-
-            <PersistFormikValues name={"PETS"} />
-          </FormFormik>
-        )}
-      </Formik>
+      <SignUpStepTitle>{signUpFormData.title}</SignUpStepTitle>
+      <SignUpStepSubTitle>{signUpFormData.subTitle}</SignUpStepSubTitle>
+      <SignUpForm
+        initialValues={initialValues}
+        handleSubmit={handleSubmit}
+        renderStep={renderStep}
+        currentFormIndex={currentFormIndex}
+        currentStep={currentStep}
+      />
     </div>
   );
 };

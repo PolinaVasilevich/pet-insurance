@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../../store/reducers/action-creators";
 
-const UserPage = () => {
+const UserPage = ({ removePet }) => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 

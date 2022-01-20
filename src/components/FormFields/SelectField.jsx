@@ -12,6 +12,8 @@ const SelectField = (props) => {
   const [field, meta] = useField(props);
   const { value: selectedValue } = field;
 
+  console.log("RENDER SELECT");
+
   return (
     <FormField>
       <Select

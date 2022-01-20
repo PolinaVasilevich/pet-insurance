@@ -11,8 +11,6 @@ const initialState = {
     username: "",
     password: "",
   },
-
-  pets: JSON.parse(localStorage.getItem("PETS"))?.pets || [],
 };
 
 export default function formReducer(state = initialState, action) {

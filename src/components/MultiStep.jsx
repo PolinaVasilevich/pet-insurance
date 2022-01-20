@@ -14,16 +14,23 @@ import { FormActionCreators } from "../store/reducers/action-creators";
 import { useSignUpFormData } from "../hooks/useSignUpFormData";
 import { useBreedsPet } from "../hooks/useBreedsPet";
 
+// const pets = (state) => state.pets;
+
 const MultiStep = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user);
-  const pets = useSelector((state) => state.pets);
+  // const petsSelector = useSelector(
+  //   pets,
+  //   (prev, current) => prev.id === current.id
+  // );
 
   const { currentStep, currentFormIndex } = useSelector(
     (state) => state.signUpForm
   );
+
+  console.log("RENDER MULTISTEP");
 
   const { breedsPet } = useBreedsPet();
   const signUpFormData = useSignUpFormData(currentStep);
@@ -53,7 +60,7 @@ const MultiStep = () => {
     navigate(`/registration/${nextStep}`);
   };
 
-  const renderStep = (step, formIndex) => {
+  const renderStep = (step, formIndex, action) => {
     switch (step) {
       case 1:
         return <NamePetForm formIndex={formIndex} />;
@@ -62,13 +69,7 @@ const MultiStep = () => {
       case 3:
         return <UserInfoForm formIndex={formIndex} />;
       case 4:
-        return (
-          <UserPage
-            formIndex={formIndex}
-            username={user?.username}
-            pets={pets}
-          />
-        );
+        return <UserPage removePet={action} />;
       default:
         return <NamePetForm formIndex={formIndex} />;
     }

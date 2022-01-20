@@ -26,6 +26,8 @@ const SignUpForm = ({
     navigate("/registration/1");
   };
 
+  console.log("SIGNUPFORM");
+
   return (
     <Formik
       initialValues={{ ...initialValues }}
@@ -36,13 +38,13 @@ const SignUpForm = ({
       {({ values }) => (
         <FormFormik>
           <FieldArray name="pets">
-            {({ push }) => (
+            {({ push, remove }) => (
               <div>
                 {values.pets.map((p, index) => {
                   return (
                     <div key={p.id}>
                       {currentFormIndex === index
-                        ? renderStep(currentStep, index, values)
+                        ? renderStep(currentStep, index, remove)
                         : null}
                     </div>
                   );

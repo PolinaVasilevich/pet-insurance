@@ -5,6 +5,7 @@ import SelectField from "../../FormFields/SelectField";
 import { validate } from "./validate";
 
 const BreedPetForm = ({ formIndex, options }) => {
+  console.log("RENDER BREEDPETFORM");
   return (
     <Field
       validate={validate}
@@ -15,4 +16,7 @@ const BreedPetForm = ({ formIndex, options }) => {
   );
 };
 
-export default BreedPetForm;
+export default React.memo(
+  BreedPetForm,
+  (prevProps, nextProps) => prevProps.formIndex === nextProps.formIndex
+);

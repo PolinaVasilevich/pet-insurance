@@ -12,9 +12,11 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { RouteNames } from "../router";
+import { FormActionCreators } from "../store/reducers/action-creators";
 
 const Registration = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const countSteps = 4;
   const { currentStep } = useSelector((state) => state.signUpForm);
@@ -23,6 +25,7 @@ const Registration = () => {
 
   const prevStep = () => {
     if (currentStep !== 1) {
+      dispatch(FormActionCreators.changeCurrentStep(currentStep - 1));
       navigate(`/registration/${currentStep - 1}`);
     }
   };

@@ -9,6 +9,8 @@ import {
 const InputField = (props) => {
   const [field, meta] = useField(props);
 
+  // console.log("RENDER INPUTFIELD");
+
   return (
     <FormField>
       <FormInput {...field} {...props} />

@@ -11,8 +11,8 @@ import { RouteNames } from "../router";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const currentStep = useSelector((state) => state.currentStep);
-  const user = useSelector((state) => state.user);
+  const { currentStep } = useSelector((state) => state.signUpForm);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

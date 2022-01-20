@@ -5,6 +5,8 @@ import InputField from "../../FormFields/InputField";
 import { validateName } from "./validate";
 
 const NamePetForm = ({ formIndex }) => {
+  console.log("RENDER NAMEPETFORM");
+
   return (
     <Field
       validate={validateName}
@@ -15,4 +17,7 @@ const NamePetForm = ({ formIndex }) => {
   );
 };
 
-export default NamePetForm;
+export default React.memo(
+  NamePetForm,
+  (prevProps, nextProps) => prevProps.formIndex === nextProps.formIndex
+);

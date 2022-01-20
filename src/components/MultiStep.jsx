@@ -30,11 +30,7 @@ const MultiStep = () => {
 
   const user = useSelector((state) => state.user);
 
-  const variant = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
-
-  console.log(process.env.REACT_APP_EXPERIMENT_ID);
-
-  console.log(variant);
+  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
 
   const { currentStep, currentFormIndex } = useSelector(
     (state) => state.signUpForm
@@ -71,17 +67,32 @@ const MultiStep = () => {
   };
 
   const renderStep = (step, formIndex, action) => {
-    switch (step) {
-      case 1:
-        return <NamePetForm formIndex={formIndex} />;
-      case 2:
-        return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
-      case 3:
-        return <UserInfoForm formIndex={formIndex} />;
-      case 4:
-        return <UserPage removePet={action} />;
-      default:
-        return <NamePetForm formIndex={formIndex} />;
+    if (variantForm === 1) {
+      switch (step) {
+        case 1:
+          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
+        case 2:
+          return <NamePetForm formIndex={formIndex} />;
+        case 3:
+          return <UserInfoForm formIndex={formIndex} />;
+        case 4:
+          return <UserPage removePet={action} />;
+        default:
+          return <NamePetForm formIndex={formIndex} />;
+      }
+    } else {
+      switch (step) {
+        case 1:
+          return <NamePetForm formIndex={formIndex} />;
+        case 2:
+          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
+        case 3:
+          return <UserInfoForm formIndex={formIndex} />;
+        case 4:
+          return <UserPage removePet={action} />;
+        default:
+          return <NamePetForm formIndex={formIndex} />;
+      }
     }
   };
 

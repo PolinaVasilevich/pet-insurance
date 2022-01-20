@@ -16,5 +16,6 @@ export const useGoogleOptimize = (experimentId) => {
       }, 100);
     })();
   });
+
   return variant;
 };

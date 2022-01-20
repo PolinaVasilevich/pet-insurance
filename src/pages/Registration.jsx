@@ -25,7 +25,7 @@ const Registration = () => {
 
   const prevStep = () => {
     if (currentStep !== 1) {
-      dispatch(FormActionCreators.changeCurrentStep(currentStep - 1));
+      // dispatch(FormActionCreators.changeCurrentStep(currentStep - 1));
       navigate(`/registration/${currentStep - 1}`);
     }
   };

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import SignUpStepTitle from "./SignUpStepTitle";
 import SignUpStepSubTitle from "./SignUpStepSubTitle";
@@ -19,6 +19,13 @@ import { useBreedsPet } from "../hooks/useBreedsPet";
 const MultiStep = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    dispatch(
+      FormActionCreators.changeCurrentStep(+pathname[pathname.length - 1])
+    );
+  }, [pathname]);
 
   const user = useSelector((state) => state.user);
   // const petsSelector = useSelector(
@@ -55,7 +62,7 @@ const MultiStep = () => {
       dispatch(FormActionCreators.addUser(user));
     }
 
-    dispatch(FormActionCreators.changeCurrentStep(nextStep));
+    // dispatch(FormActionCreators.changeCurrentStep(nextStep));
 
     navigate(`/registration/${nextStep}`);
   };

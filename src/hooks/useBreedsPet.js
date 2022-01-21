@@ -9,5 +9,5 @@ export const useBreedsPet = () => {
     { id: 7, value: "Alley Cat", label: "Alley Cat" },
     { id: 8, value: "American Curl", label: "American Curl" },
   ];
-  return { breedsPet };
+  return breedsPet;
 };

@@ -1,23 +1,22 @@
 import React, { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import SignUpStepTitle from "./SignUpStepTitle";
 import SignUpStepSubTitle from "./SignUpStepSubTitle";
-import SignUpForm from "./FormFormik/SignUpForm";
-import { NamePetForm, BreedPetForm, UserInfoForm, UserPage } from "./Forms";
+import SignUpForm from "./Forms/SignUpForm/SignUpForm";
 
 import { FormActionCreators } from "../store/reducers/action-creators";
 
 import { useSignUpFormData } from "../hooks/useSignUpFormData";
-import { useBreedsPet } from "../hooks/useBreedsPet";
 import { useGoogleOptimize } from "../hooks/useGoogleOptimize";
-
-// const pets = (state) => state.pets;
+import { LAST_STEP_PET_FORM } from "../utils/consts";
+import { RouteNames } from "../router";
 
 const MultiStep = () => {
+  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -30,84 +29,39 @@ const MultiStep = () => {
 
   const user = useSelector((state) => state.user);
 
-  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
-
   const { currentStep, currentFormIndex } = useSelector(
     (state) => state.signUpForm
   );
 
   console.log("RENDER MULTISTEP");
 
-  const { breedsPet } = useBreedsPet();
   const signUpFormData = useSignUpFormData(currentStep);
 
-  const isSkipLastStep = user.username && currentStep === 2;
-  const isLastStep = currentStep === 3 && !user.username;
+  const isSkipLastStep =
+    user.username && currentStep === LAST_STEP_PET_FORM - 1;
+  const isLastStep = currentStep === LAST_STEP_PET_FORM && !user.username;
 
   const handleSubmit = (values) => {
-    const formData = values.pets[currentFormIndex];
     let nextStep;
-
     if (isSkipLastStep) {
-      nextStep = 4;
+      nextStep = LAST_STEP_PET_FORM;
     } else {
       nextStep = currentStep + 1;
     }
 
-    const { username, password } = formData;
-
     if (isLastStep) {
-      const user = { id: uuidv4(), username, password };
+      const { id, username, password } = values;
+      const user = { id, username, password };
       dispatch(FormActionCreators.addUser(user));
-    }
-
-    // dispatch(FormActionCreators.changeCurrentStep(nextStep));
-
-    navigate(`/registration/${nextStep}`);
-  };
-
-  console.log("variantForm ", variantForm);
-
-  const renderStep = (step, formIndex, action) => {
-    if (variantForm === 1) {
-      switch (step) {
-        case 1:
-          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
-        case 2:
-          return <NamePetForm formIndex={formIndex} />;
-        case 3:
-          return <UserInfoForm formIndex={formIndex} />;
-        case 4:
-          return <UserPage removePet={action} />;
-        default:
-          return <NamePetForm formIndex={formIndex} />;
-      }
+      dispatch(FormActionCreators.changeCurrentStep(1));
+      navigate(RouteNames.CHECKOUT);
     } else {
-      switch (step) {
-        case 1:
-          return <NamePetForm formIndex={formIndex} />;
-        case 2:
-          return <BreedPetForm formIndex={formIndex} options={breedsPet} />;
-        case 3:
-          return <UserInfoForm formIndex={formIndex} />;
-        case 4:
-          return <UserPage removePet={action} />;
-        default:
-          return <NamePetForm formIndex={formIndex} />;
-      }
+      const { id, petName, petBreed } = values.pets[currentFormIndex];
+      const pet = { id, petName, petBreed };
+      dispatch(FormActionCreators.addPet(pet));
+      dispatch(FormActionCreators.changeCurrentStep(nextStep));
+      navigate(`/registration/${nextStep}`);
     }
-  };
-
-  const initialValues = {
-    pets: [
-      {
-        id: uuidv4(),
-        petName: "",
-        petKind: "",
-        username: "",
-        password: "",
-      },
-    ],
   };
 
   return (
@@ -115,11 +69,9 @@ const MultiStep = () => {
       <SignUpStepTitle>{signUpFormData.title}</SignUpStepTitle>
       <SignUpStepSubTitle>{signUpFormData.subTitle}</SignUpStepSubTitle>
       <SignUpForm
-        initialValues={initialValues}
         handleSubmit={handleSubmit}
-        renderStep={renderStep}
-        currentFormIndex={currentFormIndex}
         currentStep={currentStep}
+        currentFormIndex={currentFormIndex}
       />
     </div>
   );

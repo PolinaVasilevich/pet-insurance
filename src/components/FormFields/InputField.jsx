@@ -1,23 +1,14 @@
-import { useField } from "formik";
+import { Field, useField } from "formik";
 import React from "react";
-import {
-  FormField,
-  FormInput,
-  MessageError,
-} from "../../styles/StyledComponents";
 
 const InputField = (props) => {
   const [field, meta] = useField(props);
 
-  // console.log("RENDER INPUTFIELD");
-
   return (
-    <FormField>
-      <FormInput {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <MessageError>{meta.error}</MessageError>
-      ) : null}
-    </FormField>
+    <>
+      <Field {...field} {...props} />
+      {meta.touched && meta.error ? <p>{meta.error}</p> : null}
+    </>
   );
 };
 

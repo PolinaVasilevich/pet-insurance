@@ -8,8 +8,15 @@ const initialState = {
   signUpForm: DATA.signUpForm || { currentStep: 1, currentFormIndex: 0 },
 
   user: DATA.user || {
+    id: "",
     username: "",
     password: "",
+  },
+
+  pets: DATA.pets || {
+    id: "",
+    petName: "",
+    petBreed: "",
   },
 };
 

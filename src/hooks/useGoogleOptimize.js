@@ -8,9 +8,11 @@ export const useGoogleOptimize = (experimentId) => {
       if (window.dataLayer) {
         await window.dataLayer.push({ event: "optimize.activate" });
       }
+
       const intervalId = setInterval(() => {
         if (window.google_optimize !== undefined) {
-          setVariant(window.google_optimize.get(experimentId));
+          const variant = window.google_optimize.get(experimentId);
+          if (typeof variant !== "undefined") setVariant(Number(variant));
           clearInterval(intervalId);
         }
       }, 100);

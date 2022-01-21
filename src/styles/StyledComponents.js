@@ -35,26 +35,6 @@ export const RegistrationContentContainer = styled(Box)`
   text-align: center;
 `;
 
-export const FormButton = styled(Button)`
-  width: 200px;
-  height: 45px;
-  border-radius: 1rem;
-  background-color: #fff;
-  color: #01528d;
-  font-weight: bolder;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #01528d;
-    color: #fff;
-  }
-
-  &[disabled] {
-    background-color: #fff;
-    color: #9dcbde;
-  }
-`;
-
 export const FormInput = styled(OutlinedInput)`
   width: 100%;
 

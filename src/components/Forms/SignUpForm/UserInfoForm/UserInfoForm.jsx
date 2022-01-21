@@ -3,6 +3,11 @@ import { Form, Formik } from "formik";
 import { PersistFormikValues } from "formik-persist-values";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import {
+  FormButton,
+  FormWrapper,
+  OutlinedInputField,
+} from "../../../../styles/FormStyles";
 import InputField from "../../../FormFields/InputField";
 
 import { validateUsername, validateEmail } from "./validate";
@@ -20,11 +25,12 @@ const UserInfoForm = ({ handleSubmit }) => {
       onSubmit={(values) => handleSubmit(values)}
     >
       {() => (
-        <Form>
+        <FormWrapper>
           <InputField
             validate={validateUsername}
             name="username"
             placeholder="Username*"
+            as={OutlinedInputField}
           />
 
           <InputField
@@ -32,11 +38,12 @@ const UserInfoForm = ({ handleSubmit }) => {
             name="email"
             type="email"
             placeholder="Email*"
+            as={OutlinedInputField}
           />
 
-          <Button type="submit">Next</Button>
+          <FormButton type="submit">Next</FormButton>
           <PersistFormikValues name={"USER"} />
-        </Form>
+        </FormWrapper>
       )}
     </Formik>
   );

@@ -1,10 +1,18 @@
 import React from "react";
 import { useField } from "formik";
-import { MenuItem, Select } from "@mui/material";
+import { Select, MenuItem } from "@mui/material";
 
 const SelectField = (props) => {
   const [field, meta] = useField(props);
   const { value: selectedValue } = field;
+
+  const isError = meta.touched && meta.error;
+
+  // const renderHelperText = () => {
+  //   if (isError) {
+  //     return <FormHelperText>{meta.error}</FormHelperText>;
+  //   }
+  // };
 
   return (
     <>
@@ -19,7 +27,7 @@ const SelectField = (props) => {
           </MenuItem>
         ))}
       </Select>
-      {meta.touched && meta.error ? <p>{meta.error}</p> : null}
+      {isError ? <p>{meta.error}</p> : null}
     </>
   );
 };

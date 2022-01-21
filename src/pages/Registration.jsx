@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import LinearProgress from "@mui/material/LinearProgress";
 import {
@@ -20,18 +20,20 @@ const Registration = () => {
 
   const countSteps = 4;
   const { currentStep } = useSelector((state) => state.signUpForm);
+  const user = useSelector((state) => state.user);
 
   const progress = Math.floor((100 / countSteps) * currentStep);
 
   const prevStep = () => {
     if (currentStep !== 1) {
-      // dispatch(FormActionCreators.changeCurrentStep(currentStep - 1));
+      dispatch(FormActionCreators.changeCurrentStep(currentStep - 1));
       navigate(`/registration/${currentStep - 1}`);
     }
   };
 
   const closeForm = () => {
-    navigate(RouteNames.HOME);
+    if (!user.username) navigate(RouteNames.HOME);
+    else navigate(RouteNames.CHECKOUT);
   };
 
   return (

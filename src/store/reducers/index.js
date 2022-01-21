@@ -1,4 +1,5 @@
 import { load } from "redux-localstorage-simple";
+import { v4 as uuidv4 } from "uuid";
 
 import { FormActionTypes } from "./types";
 
@@ -8,12 +9,18 @@ const initialState = {
   signUpForm: DATA.signUpForm || { currentStep: 1, currentFormIndex: 0 },
 
   user: DATA.user || {
-    id: "",
+    id: uuidv4(),
     username: "",
     password: "",
   },
 
-  pets: DATA.pets || [],
+  pets: DATA?.pets || [
+    {
+      id: uuidv4(),
+      petName: "",
+      petBreed: "",
+    },
+  ],
 };
 
 export default function formReducer(state = initialState, action) {
@@ -30,7 +37,7 @@ export default function formReducer(state = initialState, action) {
       };
 
     case FormActionTypes.ADD_PET:
-      const allPets = state.pets.filter((p) => p.id !== action.payload.id);
+      const allPets = [...state.pets].filter((p) => p.id !== action.payload.id);
       return { ...state, pets: [...allPets, action.payload] };
 
     case FormActionTypes.ADD_USER:

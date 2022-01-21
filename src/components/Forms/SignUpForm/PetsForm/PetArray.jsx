@@ -4,6 +4,7 @@ import { FieldArray } from "formik";
 import { PersistFormikValues } from "formik-persist-values";
 
 import { NamePetSection, BreedPetSection } from "./SectionsForm";
+import { FormSectionWrapper } from "../../../../styles/FormStyles";
 
 const PetArray = ({ values, currentStep, currentFormIndex }) => {
   const renderStep = (step) => {
@@ -24,12 +25,12 @@ const PetArray = ({ values, currentStep, currentFormIndex }) => {
         <>
           {values.pets.map((p, index) => {
             return (
-              <div key={p.id}>
+              <FormSectionWrapper key={p.id}>
                 {currentFormIndex === index ? renderStep(currentStep) : null}
-              </div>
+              </FormSectionWrapper>
             );
           })}
-          <PersistFormikValues name={"PETS"} />
+          {/* <PersistFormikValues name={"PETS"} /> */}
         </>
       )}
     />

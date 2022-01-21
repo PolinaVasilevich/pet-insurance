@@ -13,11 +13,7 @@ const initialState = {
     password: "",
   },
 
-  pets: DATA.pets || {
-    id: "",
-    petName: "",
-    petBreed: "",
-  },
+  pets: DATA.pets || [],
 };
 
 export default function formReducer(state = initialState, action) {
@@ -34,7 +30,8 @@ export default function formReducer(state = initialState, action) {
       };
 
     case FormActionTypes.ADD_PET:
-      return { ...state, pets: [...state.pets, { ...action.payload }] };
+      const allPets = state.pets.filter((p) => p.id !== action.payload.id);
+      return { ...state, pets: [...allPets, action.payload] };
 
     case FormActionTypes.ADD_USER:
       return { ...state, user: action.payload };

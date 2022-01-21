@@ -1,5 +1,6 @@
 import React from "react";
 import { useBreedsPet } from "../../../../../../hooks/useBreedsPet";
+import { OutlinedInputField } from "../../../../../../styles/FormStyles";
 
 import SelectField from "../../../../../FormFields/SelectField";
 
@@ -13,6 +14,7 @@ const BreedPetSection = ({ formIndex }) => {
       validate={validate}
       data={breedsPet}
       name={`pets[${formIndex}].petBreed`}
+      input={<OutlinedInputField />}
     />
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, useField } from "formik";
+import { FormErrorMessage } from "./styles";
 
 const InputField = (props) => {
   const [field, meta] = useField(props);
@@ -13,7 +14,9 @@ const InputField = (props) => {
   return (
     <>
       <Field {...field} {...props} />
-      {meta.touched && meta.error ? <p>{meta.error}</p> : null}
+      {meta.touched && meta.error ? (
+        <FormErrorMessage>{meta.error}</FormErrorMessage>
+      ) : null}
     </>
   );
 };

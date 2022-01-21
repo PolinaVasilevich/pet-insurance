@@ -1,6 +1,8 @@
 import React from "react";
 import { useField } from "formik";
 import { Select, MenuItem } from "@mui/material";
+import { SelectPlaceholder } from "../../styles/StyledComponents";
+import { FormErrorMessage } from "./styles";
 
 const SelectField = (props) => {
   const [field, meta] = useField(props);
@@ -8,18 +10,22 @@ const SelectField = (props) => {
 
   const isError = meta.touched && meta.error;
 
-  // const renderHelperText = () => {
-  //   if (isError) {
-  //     return <FormHelperText>{meta.error}</FormHelperText>;
-  //   }
-  // };
-
   return (
     <>
       <Select
         displayEmpty
         {...field}
+        {...props}
         value={selectedValue ? selectedValue : ""}
+        renderValue={
+          selectedValue !== ""
+            ? null
+            : () => (
+                <SelectPlaceholder>
+                  {props.label ? props.label : "Select..."}
+                </SelectPlaceholder>
+              )
+        }
       >
         {props.data.map((item, index) => (
           <MenuItem key={index} value={item.value}>
@@ -27,7 +33,7 @@ const SelectField = (props) => {
           </MenuItem>
         ))}
       </Select>
-      {isError ? <p>{meta.error}</p> : null}
+      {isError ? <FormErrorMessage>{meta.error}</FormErrorMessage> : null}
     </>
   );
 };

@@ -20,11 +20,7 @@ const SelectField = (props) => {
         renderValue={
           selectedValue !== ""
             ? null
-            : () => (
-                <SelectPlaceholder>
-                  {props.label ? props.label : "Select..."}
-                </SelectPlaceholder>
-              )
+            : () => <SelectPlaceholder>Select...</SelectPlaceholder>
         }
       >
         {props.data.map((item, index) => (

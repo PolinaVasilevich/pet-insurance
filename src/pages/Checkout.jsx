@@ -26,7 +26,12 @@ const Checkout = () => {
     dispatch(FormActionCreators.changeCurrentFormIndex(pets.length));
 
     dispatch(
-      FormActionCreators.addPet({ id: uuidv4(), petName: "", petBreed: "" })
+      FormActionCreators.addPet({
+        id: uuidv4(),
+        petName: "",
+        petType: "",
+        petBreed: "",
+      })
     );
 
     dispatch(FormActionCreators.changeCurrentStep(1));

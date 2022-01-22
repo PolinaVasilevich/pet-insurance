@@ -13,6 +13,7 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { RouteNames } from "../router";
 import { FormActionCreators } from "../store/reducers/action-creators";
+import { LAST_STEP_PET_FORM } from "../utils/consts";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Registration = () => {
   const { currentStep } = useSelector((state) => state.signUpForm);
   const user = useSelector((state) => state.user);
 
-  const progress = Math.floor((100 / countSteps) * currentStep);
+  const progress = Math.floor((100 / LAST_STEP_PET_FORM) * currentStep);
 
   const prevStep = () => {
     if (currentStep !== 1) {
@@ -40,7 +41,7 @@ const Registration = () => {
     <RegistrationContainer>
       <RegistrationHeader
         style={
-          currentStep === 1 || currentStep === 4
+          currentStep === 1 || currentStep === LAST_STEP_PET_FORM + 1
             ? { justifyContent: "flex-end" }
             : {}
         }
@@ -48,13 +49,15 @@ const Registration = () => {
         <ArrowBackIosNewOutlinedIcon
           disabled={currentStep === 1}
           style={
-            currentStep === 1 || currentStep === 4 ? { display: "none" } : {}
+            currentStep === 1 || currentStep === LAST_STEP_PET_FORM + 1
+              ? { display: "none" }
+              : {}
           }
           onClick={prevStep}
         />
         <CloseOutlinedIcon onClick={closeForm} />
       </RegistrationHeader>
-      {currentStep !== 4 ? (
+      {currentStep !== LAST_STEP_PET_FORM + 1 ? (
         <LinearProgress
           variant="determinate"
           value={progress}
@@ -62,7 +65,7 @@ const Registration = () => {
         />
       ) : null}
       <RegistrationContentContainer>
-        {currentStep !== 4 ? (
+        {currentStep !== LAST_STEP_PET_FORM ? (
           <h3 style={{ textAlign: "center" }}>
             {currentStep} of {countSteps}
           </h3>

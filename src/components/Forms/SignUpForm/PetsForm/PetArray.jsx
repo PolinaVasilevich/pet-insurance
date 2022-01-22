@@ -5,14 +5,22 @@ import { PersistFormikValues } from "formik-persist-values";
 
 import { NamePetSection, BreedPetSection } from "./SectionsForm";
 import { FormSectionWrapper } from "../../../../styles/FormStyles";
+import PetTypeSection from "./SectionsForm/PetTypeSection/PetTypeSection";
 
-const PetArray = ({ values, currentStep, currentFormIndex }) => {
+const PetArray = ({ values, currentStep, currentFormIndex, variantForm }) => {
   const renderStep = (step) => {
     switch (step) {
       case 1:
         return <NamePetSection formIndex={currentFormIndex} />;
       case 2:
         return <BreedPetSection formIndex={currentFormIndex} />;
+      case 3:
+        return (
+          <PetTypeSection
+            formIndex={currentFormIndex}
+            variantForm={variantForm}
+          />
+        );
       default:
         return <NamePetSection formIndex={currentFormIndex} />;
     }

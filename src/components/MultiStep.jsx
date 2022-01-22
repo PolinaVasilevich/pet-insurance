@@ -10,13 +10,11 @@ import SignUpForm from "./Forms/SignUpForm/SignUpForm";
 import { FormActionCreators } from "../store/reducers/action-creators";
 
 import { useSignUpFormData } from "../hooks/useSignUpFormData";
-import { useGoogleOptimize } from "../hooks/useGoogleOptimize";
+
 import { LAST_STEP_PET_FORM } from "../utils/consts";
 import { RouteNames } from "../router";
 
 const MultiStep = () => {
-  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,8 +33,8 @@ const MultiStep = () => {
   const isLastStep = currentStep === LAST_STEP_PET_FORM && !user.username;
 
   const addPet = (values) => {
-    const { id, petName, petBreed } = values.pets[currentFormIndex];
-    const pet = { id, petName, petBreed };
+    const { id, petName, petBreed, petType } = values.pets[currentFormIndex];
+    const pet = { id, petName, petBreed, petType };
     dispatch(FormActionCreators.addPet(pet));
     dispatch(FormActionCreators.changeCurrentStep(currentStep + 1));
     if (isSkipLastStep) {

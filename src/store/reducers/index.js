@@ -18,6 +18,7 @@ const initialState = {
     {
       id: uuidv4(),
       petName: "",
+      petType: "",
       petBreed: "",
     },
   ],

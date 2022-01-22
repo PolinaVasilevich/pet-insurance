@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from "react";
 
 import { Formik } from "formik";
 
 import PetArray from "./PetArray";
 import { FormButton, FormWrapper } from "../../../../styles/FormStyles";
 import { useSelector } from "react-redux";
+import { PET_TYPE_STEP } from "../../../../utils/consts";
+
+import { useGoogleOptimize } from "../../../../hooks/useGoogleOptimize";
 
 const PetsForm = ({ handleSubmit, currentStep, currentFormIndex }) => {
   const pets = useSelector((state) => state.pets);
+  const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
 
   const initialValues = {
     pets,
@@ -25,9 +28,12 @@ const PetsForm = ({ handleSubmit, currentStep, currentFormIndex }) => {
             values={values}
             currentStep={currentStep}
             currentFormIndex={currentFormIndex}
+            variantForm={variantForm}
           />
 
-          <FormButton type="submit">Next</FormButton>
+          {!(currentStep === PET_TYPE_STEP && variantForm === 1) ? (
+            <FormButton type="submit">Next</FormButton>
+          ) : null}
         </FormWrapper>
       )}
     </Formik>

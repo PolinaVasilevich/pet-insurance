@@ -6,16 +6,16 @@ export const useSignUpFormData = (currentStep) => {
       title: `What breed of your pet?`,
       subTitle: "Different breeds have different needs",
     },
+
     {
       id: 3,
-      title: "Tell Us About The Human",
-      subTitle:
-        "Someone's got to pay the bills. Share your name and email to get you personalized recommendation!",
+      title: "Your pet is...",
     },
     {
       id: 4,
-      title: "Hello!",
-      subTitle: "You can select Insurance and Wellness plans for your pets",
+      title: "Tell Us About The Human",
+      subTitle:
+        "Someone's got to pay the bills. Share your name and email to get you personalized recommendation!",
     },
   ];
 

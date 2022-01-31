@@ -13,14 +13,14 @@ const PetArray = ({ values, currentStep, currentFormIndex, variantForm }) => {
       case 1:
         return <NamePetSection formIndex={currentFormIndex} />;
       case 2:
-        return <BreedPetSection formIndex={currentFormIndex} />;
-      case 3:
         return (
           <PetTypeSection
             formIndex={currentFormIndex}
             variantForm={variantForm}
           />
         );
+      case 3:
+        return <BreedPetSection formIndex={currentFormIndex} />;
       default:
         return <NamePetSection formIndex={currentFormIndex} />;
     }

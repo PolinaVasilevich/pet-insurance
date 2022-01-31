@@ -11,7 +11,7 @@ import {
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const PetCardList = ({ handleRemovePet, handleClick, addNewPet }) => {
+const PetList = ({ handleRemovePet, handleClick, addNewPet }) => {
   const user = useSelector((state) => state.user);
   const pets = useSelector((state) => state.pets).filter((p) => p.petBreed);
 
@@ -87,4 +87,4 @@ const PetCardList = ({ handleRemovePet, handleClick, addNewPet }) => {
   );
 };
 
-export default PetCardList;
+export default PetList;

@@ -1,13 +1,13 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-import { FormActionCreators } from "../store/reducers/action-creators";
 import { useSelector } from "react-redux";
 
-import PetCardList from "../components/PetCardList/PetCardList";
+import { FormActionCreators } from "../store/reducers/action-creators";
+
+import PetList from "../components/PetList/PetList";
+import { usePets } from "../hooks/usePets";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -22,28 +22,14 @@ const Checkout = () => {
     navigation("/registration/1");
   };
 
-  const addNewPet = () => {
-    dispatch(FormActionCreators.changeCurrentFormIndex(pets.length));
-
-    dispatch(
-      FormActionCreators.addPet({
-        id: uuidv4(),
-        petName: "",
-        petType: "",
-        petBreed: "",
-      })
-    );
-
-    dispatch(FormActionCreators.changeCurrentStep(1));
-    navigation("/registration/1");
-  };
+  const { addNewPet } = usePets();
 
   const onRemovePet = (petId) => {
     dispatch(FormActionCreators.removePet(petId));
   };
 
   return (
-    <PetCardList
+    <PetList
       handleClick={handleClick}
       addNewPet={addNewPet}
       handleRemovePet={onRemovePet}

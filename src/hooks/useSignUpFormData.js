@@ -3,13 +3,14 @@ export const useSignUpFormData = (currentStep) => {
     { id: 1, title: "What Is Your Pet's Name?", subTitle: "" },
     {
       id: 2,
-      title: `What breed of your pet?`,
-      subTitle: "Different breeds have different needs",
+      title: "Your pet is...",
     },
 
     {
       id: 3,
-      title: "Your pet is...",
+
+      title: `What breed of your pet?`,
+      subTitle: "Different breeds have different needs",
     },
     {
       id: 4,

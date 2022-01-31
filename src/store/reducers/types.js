@@ -5,4 +5,5 @@ export const FormActionTypes = {
   ADD_PET: "ADD_PET",
   CHANGE_PET: "CHANGE_PET",
   CHANGE_CURRENT_STEP: "CHANGE_CURRENT_STEP",
+  REMOVE_PET: "REMOVE_PET",
 };

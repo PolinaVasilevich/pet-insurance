@@ -50,6 +50,13 @@ export default function formReducer(state = initialState, action) {
         signUpForm: { ...state.signUpForm, currentStep: action.payload },
       };
 
+    case FormActionTypes.REMOVE_PET:
+      const newPets = state.pets.filter((p) => p.id !== action.payload);
+      return {
+        ...state,
+        pets: [...newPets],
+      };
+
     default:
       return state;
   }

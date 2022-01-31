@@ -1,13 +1,13 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { Button } from "@mui/material";
-
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { FormActionCreators } from "../store/reducers/action-creators";
 import { useSelector } from "react-redux";
+
+import PetCardList from "../components/PetCardList/PetCardList";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -38,22 +38,16 @@ const Checkout = () => {
     navigation("/registration/1");
   };
 
-  return (
-    <div>
-      {pets.map((p) => (
-        <Button
-          sx={{ margin: "1rem" }}
-          key={p.id}
-          variant="outlined"
-          color="inherit"
-          onClick={() => handleClick(p.id)}
-        >
-          {p.petName}
-        </Button>
-      ))}
+  const onRemovePet = (petId) => {
+    dispatch(FormActionCreators.removePet(petId));
+  };
 
-      <Button onClick={addNewPet}>Add new pet</Button>
-    </div>
+  return (
+    <PetCardList
+      handleClick={handleClick}
+      addNewPet={addNewPet}
+      handleRemovePet={onRemovePet}
+    />
   );
 };
 

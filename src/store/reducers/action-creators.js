@@ -25,4 +25,9 @@ export const FormActionCreators = {
     type: FormActionTypes.CHANGE_CURRENT_STEP,
     payload: step,
   }),
+
+  removePet: (petId) => ({
+    type: FormActionTypes.REMOVE_PET,
+    payload: petId,
+  }),
 };

@@ -1,0 +1,15 @@
+{
+  "user": {
+    "id": "fee29163-0582-404a-8de5-f6673c474e87",
+    "username": "Palina.Vasilevich",
+    "email": "user@mail.com"
+  },
+  "pets": [
+    {
+      "id": "075ad8ac-1571-4ca6-8afa-cd64b2448f92",
+      "petName": "ggh",
+      "petType": "dog",
+      "petBreed": ""
+    }
+  ]
+}

@@ -11,9 +11,14 @@ export const FormActionCreators = {
     payload: formIndex,
   }),
 
-  addPet: (pets) => ({
+  changePet: (pet) => ({
+    type: FormActionTypes.CHANGE_PET,
+    payload: pet,
+  }),
+
+  addPet: (pet) => ({
     type: FormActionTypes.ADD_PET,
-    payload: pets,
+    payload: pet,
   }),
 
   addUser: (user) => ({

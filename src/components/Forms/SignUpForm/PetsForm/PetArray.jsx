@@ -1,7 +1,6 @@
 import React from "react";
 
 import { FieldArray } from "formik";
-import { PersistFormikValues } from "formik-persist-values";
 
 import { NamePetSection, BreedPetSection } from "./SectionsForm";
 import { FormSectionWrapper } from "../../../../styles/FormStyles";

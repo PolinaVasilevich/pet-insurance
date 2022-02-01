@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+
 import {
   PetListContentWrapper,
   PetListHeader,
@@ -11,10 +11,7 @@ import {
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const PetList = ({ handleRemovePet, handleClick, addNewPet }) => {
-  const user = useSelector((state) => state.user);
-  const pets = useSelector((state) => state.pets).filter((p) => p.petBreed);
-
+const PetList = ({ user, pets, handleRemovePet, handleClick, addNewPet }) => {
   const [selectedPet, setSelectedPet] = useState(() => pets[pets.length - 1]);
 
   return (

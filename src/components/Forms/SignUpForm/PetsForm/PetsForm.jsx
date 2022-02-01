@@ -10,7 +10,7 @@ import { PET_TYPE_STEP } from "../../../../utils/consts";
 import { useGoogleOptimize } from "../../../../hooks/useGoogleOptimize";
 
 const PetsForm = ({ handleSubmit, currentStep, currentFormIndex }) => {
-  const pets = useSelector((state) => state.pets);
+  const pets = useSelector((state) => state.form.pets);
   const variantForm = useGoogleOptimize(process.env.REACT_APP_EXPERIMENT_ID);
 
   const initialValues = {

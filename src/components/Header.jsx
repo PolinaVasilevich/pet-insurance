@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,11 +8,18 @@ import Button from "@mui/material/Button";
 
 import { Link } from "react-router-dom";
 import { RouteNames } from "../router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "../store/actions/userActions/userActions";
 
 const Header = () => {
-  const { currentStep } = useSelector((state) => state.signUpForm);
-  const user = useSelector((state) => state.user);
+  const { currentStep } = useSelector((state) => state.form.signUpForm);
+  const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

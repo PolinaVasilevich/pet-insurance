@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
-import { FormActionCreators } from "../store/reducers/action-creators";
+import { FormActionCreators } from "../store/actions/formActions/formActions";
 
 export const usePets = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
-  const pets = useSelector((state) => state.pets);
+  const pets = useSelector((state) => state.form.pets);
 
   const addNewPet = () => {
     dispatch(FormActionCreators.changeCurrentFormIndex(pets.length));

@@ -8,6 +8,7 @@ import { validate } from "./validate";
 
 const BreedPetSection = ({ formIndex }) => {
   console.log("RENDER BREED_PET_SECTION");
+
   const breedsPet = useBreedsPet();
   return (
     <SelectField

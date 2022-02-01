@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -12,16 +12,21 @@ import {
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { RouteNames } from "../router";
-import { FormActionCreators } from "../store/reducers/action-creators";
+import { FormActionCreators } from "../store/actions/formActions/formActions";
 import { LAST_STEP_PET_FORM } from "../utils/consts";
+import { fetchUser } from "../store/actions/userActions/userActions";
 
 const Registration = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const countSteps = 4;
-  const { currentStep } = useSelector((state) => state.signUpForm);
-  const user = useSelector((state) => state.user);
+  const { currentStep } = useSelector((state) => state.form.signUpForm);
+  const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
 
   const progress = Math.floor((100 / LAST_STEP_PET_FORM) * currentStep);
 

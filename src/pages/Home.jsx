@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePets } from "../hooks/usePets";
+import { fetchUser } from "../store/actions/userActions/userActions";
 import { FormButton } from "../styles/FormStyles";
 
 const Home = () => {
-  const user = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
+
   const { addNewPet } = usePets();
   return (
     <div style={{ textAlign: "center" }}>
